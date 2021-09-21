@@ -10,11 +10,15 @@
         </ul>
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <router-link class="nav-link" to="/create">Create Poll</router-link>
+            <router-link class="nav-link" to="/poll/create"
+              >Create Poll</router-link
+            >
           </li>
         </ul>
       </div>
     </nav>
+  </div>
+  <div class="container mt-3">
     <router-view />
   </div>
 </template>
