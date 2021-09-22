@@ -19393,7 +19393,10 @@ __webpack_require__.r(__webpack_exports__);
       }],
       answersMinimumAmount: 2,
       answersMaximumAmount: 10,
-      question: ""
+      question: "",
+      duplicateAnswers: false,
+      multiplyAnswers: false,
+      errorFormValidation: ""
     };
   },
   methods: {
@@ -19409,7 +19412,41 @@ __webpack_require__.r(__webpack_exports__);
         this.answers.pop();
       }
     },
-    submit: function submit(event) {}
+    validateForm: function validateForm() {
+      if (!this.question) {
+        this.errorFormValidation = "Question can't be empty.";
+        return false;
+      } else if (this.question.length > 255) {
+        this.errorFormValidation = "Question is ".concat(this.question.length - 255, " over character limit.");
+        return false;
+      }
+
+      for (var i = 0; i < this.answers.length; i++) {
+        if (!this.answers[i].content) {
+          this.errorFormValidation = "Answer ".concat(i + 1, " can't be empty.");
+          return false;
+        } else if (this.answers[i].content.length > 255) {
+          this.errorFormValidation = "Answer ".concat(i + 1, " is ").concat(this.question.length - 255, " over character limit.");
+          return false;
+        }
+      }
+
+      this.errorFormValidation = "";
+      return true;
+    },
+    submit: function submit(event) {
+      console.log("submit");
+
+      if (this.validateForm()) {
+        console.log("validation");
+        this.$axios.post("/api/poll/create", {
+          question: this.question,
+          answers: this.answers,
+          multiplyAnswers: this.multiplyAnswers,
+          duplicateAnswers: this.duplicateAnswers
+        }).then(function (response) {})["catch"](function (error) {});
+      }
+    }
   }
 });
 
@@ -19537,7 +19574,7 @@ var _hoisted_1 = {
   "class": "d-flex justify-content-center"
 };
 var _hoisted_2 = {
-  "class": "mb-3"
+  "class": "input-group mb-3"
 };
 
 var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
@@ -19548,30 +19585,68 @@ var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 );
 
 var _hoisted_4 = ["for"];
-var _hoisted_5 = ["onUpdate:modelValue", "id"];
-var _hoisted_6 = ["disabled"];
-var _hoisted_7 = ["disabled"];
+var _hoisted_5 = ["id", "onUpdate:modelValue"];
+var _hoisted_6 = {
+  "class": "form-check"
+};
+var _hoisted_7 = {
+  key: 0,
+  "class": "form-check-label",
+  "for": "multiplyAnswers"
+};
+var _hoisted_8 = {
+  key: 1,
+  "class": "form-check-label",
+  "for": "multiplyAnswers"
+};
 
-var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
+/* HOISTED */
+);
+
+var _hoisted_10 = {
+  key: 2,
+  "class": "form-check-label",
+  "for": "duplicateAnswers"
+};
+var _hoisted_11 = {
+  key: 3,
+  "class": "form-check-label",
+  "for": "duplicateAnswers"
+};
+var _hoisted_12 = {
+  key: 0,
+  "class": "alert alert-danger mt-3",
+  role: "alert"
+};
+var _hoisted_13 = {
+  "class": "mt-3"
+};
+var _hoisted_14 = ["disabled"];
+var _hoisted_15 = ["disabled"];
+
+var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
   type: "submit",
-  "class": "btn btn-primary mx-3 mt-3"
-}, " Create Poll ", -1
+  "class": "btn btn-primary mx-3"
+}, "Create Poll", -1
 /* HOISTED */
 );
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
-    onSubmit: _cache[3] || (_cache[3] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
+    onSubmit: _cache[5] || (_cache[5] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
       return $options.submit && $options.submit.apply($options, arguments);
     }, ["prevent"]))
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [_hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
-    "class": "form-control",
+    "class": "form-control input-group",
     id: "question",
     placeholder: "Type your question",
     "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
       return $data.question = $event;
-    })
+    }),
+    required: "",
+    maxlength: "255"
   }, null, 512
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.question]])]), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.answers, function (answer, index) {
@@ -19585,36 +19660,58 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* TEXT, PROPS */
     , _hoisted_4), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
       type: "text",
-      "class": "form-control",
+      "class": "input-group form-control",
+      id: 'answer-' + index,
       placeholder: "Type new answer",
       "onUpdate:modelValue": function onUpdateModelValue($event) {
         return answer.content = $event;
       },
-      id: 'answer-' + index
+      required: "",
+      maxlength: "255"
     }, null, 8
     /* PROPS */
     , _hoisted_5), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, answer.content]])]);
   }), 128
   /* KEYED_FRAGMENT */
-  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "checkbox",
+    "class": "form-check-input",
+    id: "multiplyAnswers",
+    "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
+      return $data.multiplyAnswers = $event;
+    })
+  }, null, 512
+  /* NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.multiplyAnswers]]), $data.multiplyAnswers ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_7, " Allow to choose multiply answers in poll. ")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_8, " Allow to choose single answer in poll. ")), _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "checkbox",
+    "class": "form-check-input",
+    id: "duplicateAnswers",
+    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
+      return $data.duplicateAnswers = $event;
+    })
+  }, null, 512
+  /* NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.duplicateAnswers]]), $data.duplicateAnswers ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_10, " User can answer more then once. ")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_11, " User can answer only once. "))]), $data.errorFormValidation ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.errorFormValidation), 1
+  /* TEXT */
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
-    "class": "btn btn-success mx-3 mt-3",
-    onClick: _cache[1] || (_cache[1] = function () {
+    "class": "btn btn-success mx-3",
+    onClick: _cache[3] || (_cache[3] = function () {
       return $options.addAnswer && $options.addAnswer.apply($options, arguments);
     }),
     disabled: $data.answers.length == 10
   }, " Add answer ", 8
   /* PROPS */
-  , _hoisted_6), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  , _hoisted_14), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
-    "class": "btn btn-danger mx-3 mt-3",
-    onClick: _cache[2] || (_cache[2] = function () {
+    "class": "btn btn-danger mx-3",
+    onClick: _cache[4] || (_cache[4] = function () {
       return $options.removeAnswer && $options.removeAnswer.apply($options, arguments);
     }),
     disabled: $data.answers.length == 2
   }, " Remove answer ", 8
   /* PROPS */
-  , _hoisted_7), _hoisted_8], 32
+  , _hoisted_15), _hoisted_16])], 32
   /* HYDRATE_EVENTS */
   )]);
 }
