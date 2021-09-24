@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\QuestionsController;
+use App\Http\Controllers\PollController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,5 +16,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['prefix' => 'poll'], function () {
-    Route::post('/create', [QuestionsController::class, 'store']);
+    Route::get('/{id}', [PollController::class, 'show']);
+    Route::post('/create', [PollController::class, 'store']);
 });

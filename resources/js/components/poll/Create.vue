@@ -62,12 +62,8 @@
           User can answer only once.
         </label>
       </div>
-      <div
-        class="alert alert-danger mt-3"
-        role="alert"
-        v-if="errorFormValidation"
-      >
-        {{ errorFormValidation }}
+      <div class="alert alert-danger mt-3" role="alert" v-if="errorMessage">
+        {{ errorMessage }}
       </div>
       <div class="mt-3">
         <button
@@ -113,7 +109,7 @@ export default {
       question: "",
       duplicateAnswers: false,
       multiplyAnswers: false,
-      errorFormValidation: "",
+      errorMessage: "",
     };
   },
   methods: {
@@ -129,29 +125,29 @@ export default {
     },
     validateForm() {
       if (!this.question) {
-        this.errorFormValidation = "Question can't be empty.";
+        this.errorMessage = "Question can't be empty.";
         return false;
       } else if (this.question.length > 255) {
-        this.errorFormValidation = `Question is ${
+        this.errorMessage = `Question is ${
           this.question.length - 255
         } over character limit.`;
         return false;
       }
       for (let i = 0; i < this.answers.length; i++) {
         if (!this.answers[i].content) {
-          this.errorFormValidation = `Answer ${i + 1} can't be empty.`;
+          this.errorMessage = `Answer ${i + 1} can't be empty.`;
           return false;
         } else if (this.answers[i].content.length > 255) {
-          this.errorFormValidation = `Answer ${i + 1} is ${
+          this.errorMessage = `Answer ${i + 1} is ${
             this.question.length - 255
           } over character limit.`;
           return false;
         }
       }
-      this.errorFormValidation = "";
+      this.errorMessage = "";
       return true;
     },
-    submit(event) {    
+    submit(event) {
       console.log("submit");
       if (this.validateForm()) {
         console.log("validation");
@@ -160,10 +156,23 @@ export default {
             question: this.question,
             answers: this.answers,
             multiplyAnswers: this.multiplyAnswers,
-            duplicateAnswers: this.duplicateAnswers
+            duplicateAnswers: this.duplicateAnswers,
           })
-          .then((response) => {})
-          .catch((error) => {});
+          .then((response) => {
+            if (response.status === 200) {
+              this.$router.push({
+                name: "pollShow",
+                params: { id: response.data.question_id },
+              });
+            }
+          })
+          .catch((error) => {
+            this.errorMessage = "";
+            const backendError = error.response.data.message;
+            for (let errorKey in backendError) {
+              this.errorMessage += `${backendError[errorKey][0]} `;
+            }
+          });
       }
     },
   },

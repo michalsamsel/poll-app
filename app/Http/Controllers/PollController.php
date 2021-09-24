@@ -10,7 +10,7 @@ use App\Models\Question;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 
-class QuestionsController extends Controller
+class PollController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -99,7 +99,16 @@ class QuestionsController extends Controller
      */
     public function show($id)
     {
-        //
+        try {
+            $poll = Question::with('answers')->where('id', $id)->firstOrFail();
+            return response()->json([
+                'poll' => $poll,
+            ], 200);
+        } catch (Throwable $throwable) {
+            return response()->json([
+                'message' => $throwable,
+            ], 500);
+        }
     }
 
     /**

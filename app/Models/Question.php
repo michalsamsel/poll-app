@@ -21,6 +21,16 @@ class Question extends Model
     ];
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'duplicate_answers' => 'boolean',
+        'multiply_answers' => 'boolean',
+    ];
+
+    /**
      * One question have many answers.
      * 
      * @return Answer::class[]
