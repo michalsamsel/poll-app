@@ -1,8 +1,9 @@
 import { createWebHistory, createRouter } from "vue-router";
 
 import Home from '../components/views/Home';
-import PollCreate from '../components/poll/Create';
-import PollShow from '../components/poll/Show';
+import PollCreate from '../components/polls/Create';
+import PollShow from '../components/polls/Show';
+import ResultShow from '../components/results/Show';
 
 export const routes = [
     {
@@ -19,7 +20,12 @@ export const routes = [
         name: 'pollCreate',
         path: '/poll/create',
         component: PollCreate
-    }
+    },
+    {
+        name: 'resultShow',
+        path: '/poll/:id/result',
+        component: ResultShow
+    },
 ];
 
 const router = createRouter({

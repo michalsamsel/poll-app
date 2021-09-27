@@ -38,7 +38,7 @@ class PollController extends Controller
      * $request includes:
      * String $question
      * Array of Strings $answers[0-9]['content']
-     * Boolean $multiplyAnswers
+     * Boolean $manyAnswers
      * Boolean $duplicateAnswers
      * 
      * @param  \Illuminate\Http\Request  $request
@@ -50,7 +50,7 @@ class PollController extends Controller
         $validator = Validator::make($request->all(), [
             'question' => 'min:1|max:255|string',
             'duplicateAnswer' => 'boolean',
-            'multiplyAnswer' => 'boolean',
+            'manyAnswer' => 'boolean',
             'answers' => 'min:2|max:10',
             'answers.*' => 'array:content',
             'answers.*.content' => 'min:1|max:255|string',
@@ -70,7 +70,7 @@ class PollController extends Controller
             $question = Question::create([
                 'content' => $request['question'],
                 'duplicate_answers' => $request['duplicateAnswers'],
-                'multiply_answers' => $request['multiplyAnswers'],
+                'many_answers' => $request['manyAnswers'],
             ]);
             foreach ($request['answers'] as $answer) {
                 Answer::create([

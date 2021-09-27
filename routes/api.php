@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PollController;
+use App\Http\Controllers\ResultController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,5 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'poll'], function () {
     Route::get('/{id}', [PollController::class, 'show']);
+    Route::get('/{id}/results', [ResultController::class, 'show']);
+    Route::post('/{id}/results/create', [ResultController::class, 'store']);
     Route::post('/create', [PollController::class, 'store']);
 });

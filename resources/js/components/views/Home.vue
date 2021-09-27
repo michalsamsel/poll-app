@@ -8,7 +8,7 @@
         Poll App
       </li>
       <li class="list-group-item">Create poll with up to 10 anserws.</li>
-      <li class="list-group-item">Make single or multiply anserws poll.</li>
+      <li class="list-group-item">Make single or many anserws poll.</li>
       <li class="list-group-item">
         Enable or disable duplicate anserws protection.
       </li>

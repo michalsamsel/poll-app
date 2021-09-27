@@ -31,17 +31,17 @@
         <input
           type="checkbox"
           class="form-check-input"
-          id="multiplyAnswers"
-          v-model="multiplyAnswers"
+          id="manyAnswers"
+          v-model="manyAnswers"
         />
         <label
           class="form-check-label"
-          for="multiplyAnswers"
-          v-if="multiplyAnswers"
+          for="manyAnswers"
+          v-if="manyAnswers"
         >
-          Allow to choose multiply answers in poll.
+          Allow to choose many answers in poll.
         </label>
-        <label class="form-check-label" for="multiplyAnswers" v-else>
+        <label class="form-check-label" for="manyAnswers" v-else>
           Allow to choose single answer in poll.
         </label>
         <br />
@@ -108,7 +108,7 @@ export default {
       answersMaximumAmount: 10,
       question: "",
       duplicateAnswers: false,
-      multiplyAnswers: false,
+      manyAnswers: false,
       errorMessage: "",
     };
   },
@@ -155,7 +155,7 @@ export default {
           .post("/api/poll/create", {
             question: this.question,
             answers: this.answers,
-            multiplyAnswers: this.multiplyAnswers,
+            manyAnswers: this.manyAnswers,
             duplicateAnswers: this.duplicateAnswers,
           })
           .then((response) => {

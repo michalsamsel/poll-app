@@ -17,7 +17,7 @@ class Question extends Model
     protected $fillable = [
         'content',
         'duplicate_answers',
-        'multiply_answers',
+        'many_answers',
     ];
 
     /**
@@ -27,7 +27,7 @@ class Question extends Model
      */
     protected $casts = [
         'duplicate_answers' => 'boolean',
-        'multiply_answers' => 'boolean',
+        'many_answers' => 'boolean',
     ];
 
     /**
