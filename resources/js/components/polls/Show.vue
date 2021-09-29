@@ -1,7 +1,7 @@
 <template>
   <div class="row justify-content-center">
-    <div class="col-4">
-      <h1>{{ question }}</h1>
+    <div class="col-4" v-if="answers.length">
+      <h1>{{ question }}:</h1>
       <form @submit.prevent="submit">
         <div v-if="manyAnswers">
           <!--Multi answer poll variant.-->
@@ -40,6 +40,9 @@
         </button>
       </form>
     </div>
+    <div class="col-4" v-else>
+      <h1>Loading poll data</h1>
+    </div>
   </div>
 </template>
 
@@ -59,7 +62,7 @@ export default {
   methods: {
     submit(event) {
       this.$axios
-        .post(`/api/poll/${this.$route.params.id}/results/create`, {
+        .post(`/api/poll/${this.$route.params.id}/result/create`, {
           result: this.pollResult,
         })
         .then((response) => {

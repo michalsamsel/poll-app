@@ -114,7 +114,26 @@ class ResultController extends Controller
      */
     public function show($id)
     {
-        //
+        try {
+            $results = DB::table('results')
+                ->join('answers', 'answers.id', '=', 'results.answer_id')
+                ->join('questions', 'questions.id', '=', 'answers.question_id')
+                ->select(array('results.answer_id AS id','answers.content', DB::raw('COUNT(results.answer_id) AS resultCount')))
+                ->where('questions.id', '=', $id)
+                ->groupBy('results.answer_id')
+                ->get();
+            
+            $poll = Question::where('id', $id)->first();
+
+            return response()->json([
+                'pollResults' => $results,
+                'question' => $poll->content
+            ],200);
+        } catch (Throwable $throwable) {
+            return response()->json([
+                'message' => $throwable
+            ],500);
+        }
     }
 
     /**

@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'poll'], function () {
     Route::get('/{id}', [PollController::class, 'show']);
-    Route::get('/{id}/results', [ResultController::class, 'show']);
-    Route::post('/{id}/results/create', [ResultController::class, 'store']);
+    Route::get('/{id}/result', [ResultController::class, 'show']);
+    Route::post('/{id}/result/create', [ResultController::class, 'store']);
     Route::post('/create', [PollController::class, 'store']);
 });

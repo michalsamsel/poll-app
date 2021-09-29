@@ -25,6 +25,6 @@ class Answer extends Model
      * @return Question::class
      */
     public function Answers(){
-        return $this->belongsTo(Question::class);
+        return $this->belongsTo(Question::class, 'question_id', 'id');
     }
 }
