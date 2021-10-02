@@ -7,6 +7,7 @@ use Throwable;
 use Validator;
 use App\Models\Question;
 use App\Models\Result;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ResultController extends Controller
@@ -18,7 +19,7 @@ class ResultController extends Controller
      */
     public function index()
     {
-        //
+        return response(null, 501);
     }
 
     /**
@@ -28,7 +29,7 @@ class ResultController extends Controller
      */
     public function create()
     {
-        //
+        return response(null, 501);
     }
 
     /**
@@ -36,17 +37,24 @@ class ResultController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request, $id)
+    public function store(Request $request, int $id): JsonResponse
     {
+        //Save answering user IP.
         $userIp = $request->getClientIp();
-        $searchDuplicates = null;
 
         try {
+            //Get poll with answers
             $poll = Question::with('answers')->where('id', $id)->firstOrFail();
+            //Count amount of answers
             $answersAmount = count($poll->answers);
 
+            /**
+             * Search if poll can be answered only once by same user.
+             * When true check if user IP is in database.
+             */
+            $searchDuplicates = null;
             if (!$poll->duplicate_answers) {
                 $searchDuplicates = DB::table('results')
                     ->join('answers', 'answers.id', '=', 'results.answer_id')
@@ -57,28 +65,33 @@ class ResultController extends Controller
                     ->first();
             }
 
+            //If poll can be answered only once and user from this IP answered don't store a new resource.
             if (!$poll->duplicate_answers && !is_null($searchDuplicates)) {
                 return response()->json([
                     'message' => 'You already answered to this poll.'
                 ], 400);
             }
 
+            //Validate if poll accept many answers. 
             if ($poll->many_answers) {
                 $validator = Validator::make($request->all(), [
                     'result' => "array|min:1|max:$answersAmount",
                 ]);
-            } else {
+            } //Validate if poll accept single answer.
+            else {
                 $validator = Validator::make($request->all(), [
                     'result' => 'integer',
                 ]);
             }
 
+            //Trigger when validation fails for any reason.
             if ($validator->fails()) {
                 return response()->json([
                     'message' => $validator->errors(),
                 ], 400);
             }
 
+            //Store many answers from single poll.
             if (is_array($request['result'])) {
                 DB::beginTransaction();
                 foreach ($request['result'] as $result) {
@@ -88,7 +101,8 @@ class ResultController extends Controller
                     ]);
                 }
                 DB::commit();
-            } else {
+            } //Store single answer from single poll. 
+            else {
                 Result::create([
                     'answer_id' => $request['result'],
                     'user' => $poll['duplicate_answers'] ? null : $request->getClientIp(),
@@ -110,29 +124,32 @@ class ResultController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function show($id): JsonResponse
     {
         try {
+            //Get the poll resource.
+            $poll = Question::where('id', $id)->first();
+
+            //Count Answers
             $results = DB::table('results')
                 ->join('answers', 'answers.id', '=', 'results.answer_id')
                 ->join('questions', 'questions.id', '=', 'answers.question_id')
-                ->select(array('results.answer_id AS id','answers.content', DB::raw('COUNT(results.answer_id) AS resultCount')))
+                ->select(array('answers.id AS id', 'answers.content', DB::raw('COUNT(results.answer_id) AS resultCount')))
                 ->where('questions.id', '=', $id)
                 ->groupBy('results.answer_id')
                 ->get();
-            
-            $poll = Question::where('id', $id)->first();
 
             return response()->json([
+                'message' => 'Poll has been loaded successfully.',
                 'pollResults' => $results,
-                'question' => $poll->content
-            ],200);
+                'question' => $poll
+            ], 200);
         } catch (Throwable $throwable) {
             return response()->json([
                 'message' => $throwable
-            ],500);
+            ], 500);
         }
     }
 
@@ -144,7 +161,7 @@ class ResultController extends Controller
      */
     public function edit($id)
     {
-        //
+        return response(null, 501);
     }
 
     /**
@@ -156,7 +173,7 @@ class ResultController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return response(null, 501);
     }
 
     /**
@@ -167,6 +184,6 @@ class ResultController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return response(null, 501);
     }
 }

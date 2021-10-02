@@ -19565,7 +19565,7 @@ __webpack_require__.r(__webpack_exports__);
 
     this.$axios.get("/api/poll/".concat(this.$route.params.id, "/result"), {}).then(function (response) {
       _this.pollResults = response.data.pollResults;
-      _this.question = response.data.question;
+      _this.question = response.data.question.content;
 
       for (var i = 0; i < _this.pollResults.length; i++) {
         _this.pollTotalVotes += _this.pollResults[i].resultCount;
