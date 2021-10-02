@@ -16,15 +16,6 @@ class Answer extends Model
      */
     protected $fillable = [
         'question_id',
-        'content',        
+        'content',
     ];
-
-    /**
-     * Answer belongs to only one question.
-     * 
-     * @return Question::class
-     */
-    public function Answers(){
-        return $this->belongsTo(Question::class, 'question_id', 'id');
-    }
 }

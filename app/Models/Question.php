@@ -39,12 +39,4 @@ class Question extends Model
         return $this->hasMany(Answer::class, 'question_id', 'id');
     }
 
-    /**
-     * One question have many results.
-     * 
-     * @return Answer::class[]
-     */
-    public function Results(){
-        return $this->hasManyThrough(Answer::class, Question::class, 'question_id', 'answer_id', 'id', 'id');
-    }
 }
