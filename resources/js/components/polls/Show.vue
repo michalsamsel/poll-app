@@ -30,7 +30,7 @@
         <div class="alert alert-danger mt-3" role="alert" v-if="errorMessage">
           {{ errorMessage }}
         </div>
-        <button type="submit" class="btn btn-primary">Send answer</button>
+        <button type="submit" class="btn btn-primary mx-3">Send answer</button>
         <button
           type="button"
           class="btn btn-success mx-3"
@@ -39,6 +39,16 @@
           Show Results
         </button>
       </form>
+      <input
+        class="form-control mt-3"
+        type="text"
+        id="share"
+        name="share"
+        placeholder="Readonly input here…"
+        v-bind:value="pollUrl"
+        readonly
+      />
+      <label for="share">Send this link to share this poll.</label>
     </div>
     <div class="col-4" v-else>
       <h1>Loading poll data</h1>
@@ -56,6 +66,7 @@ export default {
       duplicateAnswers: null,
       manyAnswers: null,
       pollResult: [],
+      pollUrl: window.location.href,
       errorMessage: "",
     };
   },

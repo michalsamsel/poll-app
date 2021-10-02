@@ -19490,6 +19490,7 @@ __webpack_require__.r(__webpack_exports__);
       duplicateAnswers: null,
       manyAnswers: null,
       pollResult: [],
+      pollUrl: window.location.href,
       errorMessage: ""
     };
   },
@@ -19552,6 +19553,7 @@ __webpack_require__.r(__webpack_exports__);
       question: "",
       pollResults: null,
       pollTotalVotes: 0,
+      pollUrl: window.location.href,
       errorMessage: ""
     };
   },
@@ -19886,21 +19888,29 @@ var _hoisted_9 = {
 
 var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
   type: "submit",
-  "class": "btn btn-primary"
+  "class": "btn btn-primary mx-3"
 }, "Send answer", -1
 /* HOISTED */
 );
 
-var _hoisted_11 = {
+var _hoisted_11 = ["value"];
+
+var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "for": "share"
+}, "Send this link to share this poll.", -1
+/* HOISTED */
+);
+
+var _hoisted_13 = {
   key: 1,
   "class": "col-4"
 };
 
-var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", null, "Loading poll data", -1
+var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", null, "Loading poll data", -1
 /* HOISTED */
 );
 
-var _hoisted_13 = [_hoisted_12];
+var _hoisted_15 = [_hoisted_14];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [$data.answers.length ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.question) + ":", 1
   /* TEXT */
@@ -19958,7 +19968,17 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, " Show Results ")], 32
   /* HYDRATE_EVENTS */
-  )])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_11, _hoisted_13))]);
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    "class": "form-control mt-3",
+    type: "text",
+    id: "share",
+    name: "share",
+    placeholder: "Readonly input here…",
+    value: $data.pollUrl,
+    readonly: ""
+  }, null, 8
+  /* PROPS */
+  , _hoisted_11), _hoisted_12])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_13, _hoisted_15))]);
 }
 
 /***/ }),
@@ -19987,16 +20007,24 @@ var _hoisted_3 = {
   "class": "progress"
 };
 var _hoisted_4 = ["aria-valuenow"];
-var _hoisted_5 = {
+var _hoisted_5 = ["value"];
+
+var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "for": "share"
+}, "Send this link to share this poll.", -1
+/* HOISTED */
+);
+
+var _hoisted_7 = {
   key: 1,
   "class": "col-4"
 };
 
-var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", null, "Loading poll data", -1
+var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", null, "Loading poll data", -1
 /* HOISTED */
 );
 
-var _hoisted_7 = [_hoisted_6];
+var _hoisted_9 = [_hoisted_8];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [$data.pollResults.length ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.question) + ": (Total Votes: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.pollTotalVotes) + ")", 1
   /* TEXT */
@@ -20018,7 +20046,17 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     , _hoisted_4)])]);
   }), 128
   /* KEYED_FRAGMENT */
-  ))])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_5, _hoisted_7))]);
+  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    "class": "form-control mt-3",
+    type: "text",
+    id: "share",
+    name: "share",
+    placeholder: "Readonly input here…",
+    value: $data.pollUrl,
+    readonly: ""
+  }, null, 8
+  /* PROPS */
+  , _hoisted_5), _hoisted_6])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_7, _hoisted_9))]);
 }
 
 /***/ }),

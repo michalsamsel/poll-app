@@ -34,11 +34,7 @@
           id="manyAnswers"
           v-model="manyAnswers"
         />
-        <label
-          class="form-check-label"
-          for="manyAnswers"
-          v-if="manyAnswers"
-        >
+        <label class="form-check-label" for="manyAnswers" v-if="manyAnswers">
           Allow to choose many answers in poll.
         </label>
         <label class="form-check-label" for="manyAnswers" v-else>

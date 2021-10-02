@@ -1,9 +1,9 @@
 <template>
   <div class="row justify-content-center">
     <div class="col-4" v-if="pollResults.length">
-      <h3>{{ question }}: (Total Votes: {{pollTotalVotes}})</h3>      
+      <h3>{{ question }}: (Total Votes: {{ pollTotalVotes }})</h3>
       <div class="my-3" v-for="pollResult in pollResults" :key="pollResult.id">
-        <h5>{{ pollResult.content }} ({{pollResult.resultCount}} Votes)</h5>          
+        <h5>{{ pollResult.content }} ({{ pollResult.resultCount }} Votes)</h5>
         <div class="progress">
           <div
             class="progress-bar"
@@ -13,10 +13,20 @@
             aria-valuemin="0"
             aria-valuemax="100"
           >
-          {{getPercentage(pollResult.resultCount)}}%
+            {{ getPercentage(pollResult.resultCount) }}%
           </div>
         </div>
       </div>
+      <input
+        class="form-control mt-3"
+        type="text"
+        id="share"
+        name="share"
+        placeholder="Readonly input here…"
+        v-bind:value="pollUrl"
+        readonly
+      />
+      <label for="share">Send this link to share this poll.</label>
     </div>
     <div class="col-4" v-else>
       <h1>Loading poll data</h1>
@@ -32,6 +42,7 @@ export default {
       question: "",
       pollResults: null,
       pollTotalVotes: 0,
+      pollUrl: window.location.href,
       errorMessage: "",
     };
   },
