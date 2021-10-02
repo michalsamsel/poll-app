@@ -19451,7 +19451,7 @@ __webpack_require__.r(__webpack_exports__);
             _this.$router.push({
               name: "pollShow",
               params: {
-                id: response.data.question_id
+                id: response.data.questionId
               }
             });
           }

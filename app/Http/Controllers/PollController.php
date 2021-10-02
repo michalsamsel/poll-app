@@ -7,7 +7,7 @@ use Throwable;
 use Validator;
 use App\Models\Answer;
 use App\Models\Question;
-use Illuminate\Auth\Events\Validated;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class PollController extends Controller
@@ -19,7 +19,7 @@ class PollController extends Controller
      */
     public function index()
     {
-        //
+        return response(null, 501);
     }
 
     /**
@@ -29,24 +29,23 @@ class PollController extends Controller
      */
     public function create()
     {
-        //
+        return response(null, 501);
     }
 
     /**
-     * Store a newly created resource in storage.     
-     *
-     * $request includes:
-     * String $question
-     * Array of Strings $answers[0-9]['content']
-     * Boolean $manyAnswers
-     * Boolean $duplicateAnswers
+     * Store a newly created resource in storage.
      * 
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @var String $request['question']
+     * @var Boolean $request['duplicateAnswer']
+     * @var Boolean $request['manyAnswer']
+     * @var String $request['answers'][0-9]['content']
+     *
+     * @return \Illuminate\Http\JsonResponse     
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
-        //Validate data needed to create a new poll.
+        //Validate data needed to create a new resource.
         $validator = Validator::make($request->all(), [
             'question' => 'min:1|max:255|string',
             'duplicateAnswer' => 'boolean',
@@ -66,6 +65,8 @@ class PollController extends Controller
         //Try to storege a new resource.
         try {
             $question = null;
+
+            //Try to store a question and all naswers in database
             DB::beginTransaction();
             $question = Question::create([
                 'content' => $request['question'],
@@ -79,9 +80,10 @@ class PollController extends Controller
                 ]);
             }
             DB::commit();
+
             return response()->json([
                 'message' => 'Poll is created',
-                'question_id' => $question->id
+                'questionId' => $question->id //Required to
             ], 200);
         } catch (Throwable $throwable) {
             DB::rollBack();
@@ -95,13 +97,16 @@ class PollController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function show(int $id): JsonResponse
     {
         try {
+            //Get the specified poll or fail if it doesn't exist.
             $poll = Question::with('answers')->where('id', $id)->firstOrFail();
+
             return response()->json([
+                'message' => 'Poll has been successfully loaded.',
                 'poll' => $poll,
             ], 200);
         } catch (Throwable $throwable) {
@@ -119,7 +124,7 @@ class PollController extends Controller
      */
     public function edit($id)
     {
-        //
+        return response(null, 501);
     }
 
     /**
@@ -131,7 +136,7 @@ class PollController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return response(null, 501);
     }
 
     /**
@@ -142,6 +147,6 @@ class PollController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return response(null, 501);
     }
 }

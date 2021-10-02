@@ -162,7 +162,7 @@ export default {
             if (response.status === 200) {
               this.$router.push({
                 name: "pollShow",
-                params: { id: response.data.question_id },
+                params: { id: response.data.questionId },
               });
             }
           })
