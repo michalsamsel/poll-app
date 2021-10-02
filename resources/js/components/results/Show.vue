@@ -45,7 +45,7 @@ export default {
       .get(`/api/poll/${this.$route.params.id}/result`, {})
       .then((response) => {
         this.pollResults = response.data.pollResults;
-        this.question = response.data.question;
+        this.question = response.data.question.content;
         for (let i = 0; i < this.pollResults.length; i++) {
           this.pollTotalVotes += this.pollResults[i].resultCount;
         }
