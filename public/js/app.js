@@ -19559,7 +19559,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     getPercentage: function getPercentage(pollPartVotes) {
-      return (pollPartVotes * 1 / this.pollTotalVotes * 100).toFixed(2);
+      return pollPartVotes == 0 ? 0 : (pollPartVotes * 1 / this.pollTotalVotes * 100).toFixed(2);
     }
   },
   created: function created() {

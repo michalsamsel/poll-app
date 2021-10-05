@@ -13,12 +13,12 @@ class CreateAnswersTable extends Migration
      */
     public function up()
     {
-        Schema::create('answers', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('question_id')->constrained('questions')->onUpdate('cascade')->onDelete('cascade');
-            $table->string('content');
-            $table->timestamps();
-        });
+            Schema::create('answers', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('question_id')->constrained('questions')->onUpdate('cascade')->onDelete('cascade');
+                $table->string('content');
+                $table->timestamps();
+            });
     }
 
     /**

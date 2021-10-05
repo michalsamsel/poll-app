@@ -37,6 +37,7 @@ class ResultController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
+     * @var  int|int[] $request['result']
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request, int $id): JsonResponse
@@ -132,13 +133,13 @@ class ResultController extends Controller
             //Get the poll resource.
             $poll = Question::where('id', $id)->first();
 
-            //Count Answers
-            $results = DB::table('results')
-                ->join('answers', 'answers.id', '=', 'results.answer_id')
-                ->join('questions', 'questions.id', '=', 'answers.question_id')
-                ->select(array('answers.id AS id', 'answers.content', DB::raw('COUNT(results.answer_id) AS resultCount')))
+            //Count Answers            
+            $results = DB::table('questions')
+                ->leftJoin('answers', 'questions.id', '=', 'answers.question_id')
+                ->leftJoin('results', 'answers.id', '=', 'results.answer_id')
+                ->select(array('answers.id', 'answers.content', DB::raw('COUNT(results.answer_id) AS resultCount')))
                 ->where('questions.id', '=', $id)
-                ->groupBy('results.answer_id')
+                ->groupBy('answers.id')
                 ->get();
 
             return response()->json([
